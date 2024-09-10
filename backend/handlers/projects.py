@@ -1,13 +1,13 @@
 from fastapi import APIRouter, HTTPException
-from database.connector import DatabaseConnector
-from schemas.projects import (FolderItem,
-                              FolderInStructureResponseBody,
-                              CreateFolderRequestBody,
-                              CreateFolderResponseBody,
-                              DeleteFolderRequestBody,
-                              DeleteFolderResponseBody,
-                              UpdateFolderRequestBody,
-                              UpdateFolderResponseBody)
+from backend.database import DatabaseConnector
+from backend.schemas.projects import (FolderItem,
+                                      FolderInStructureResponseBody,
+                                      CreateFolderRequestBody,
+                                      CreateFolderResponseBody,
+                                      DeleteFolderRequestBody,
+                                      DeleteFolderResponseBody,
+                                      UpdateFolderRequestBody,
+                                      UpdateFolderResponseBody)
 
 router = APIRouter(prefix='/projects')
 
