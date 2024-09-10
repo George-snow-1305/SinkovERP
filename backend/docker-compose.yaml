@@ -11,7 +11,7 @@ services:
     ports:
       - "8000:5432"
   app:
-    build: ..
+    build: .
     restart: always
     depends_on:
       - db
