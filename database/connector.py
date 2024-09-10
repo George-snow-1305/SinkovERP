@@ -21,7 +21,6 @@ CONN_STR = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 class DatabaseConnector:
     def __init__(self, conn_string: str = CONN_STR):
         self.conn_string = conn_string
-        print(conn_string)
 
     def select(self, query: str) -> List[tuple]:
         with psycopg2.connect(self.conn_string) as conn:

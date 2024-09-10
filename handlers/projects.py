@@ -1,4 +1,13 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
+from fastapi.responses import JSONResponse
+from database.queries import (GET_FOLDER_BY_FOLDER_ID,
+                              GET_ROOT_FOLDERS,
+                              GET_CHILD_FOLDERS,
+                              GET_PARENT_FOLDERS,
+                              CREATE_FOLDER,
+                              DELETE_FOLDER,
+                              UPDATE_FOLDER)
+
 from database.connector import DatabaseConnector
 from schemas.projects import (FolderItem,
                                       FolderInStructureResponseBody,
@@ -14,13 +23,15 @@ router = APIRouter(prefix='/projects')
 
 @router.get('/get_folders', response_model=FolderInStructureResponseBody)
 async def get_folders_stucture(folder_id: int):
+    connection = DatabaseConnector()
+    query = GET_FOLDER_BY_FOLDER_ID.format(folder_id=folder_id)
+    result = connection.select(query)
+    if len(result) == 0:
+        raise HTTPException(status_code=400, detail="folder_id not found")
+
     if folder_id == 0:
         connection = DatabaseConnector()
-        query = """SELECT folder_id, name, color
-                    FROM projects_folders
-                    WHERE folder_id in (SELECT parent_folder
-                    FROM projects_folders_structure
-                    WHERE parent_folder NOT IN (SELECT child_folder FROM projects_folders_structure  WHERE type = 'folder'))"""
+        query = GET_ROOT_FOLDERS
         result = connection.select(query)
         child = []
         for item in result:
@@ -34,15 +45,11 @@ async def get_folders_stucture(folder_id: int):
         return FolderInStructureResponseBody(folder_id=folder_id,
                                              parents=[],
                                              child=child,
-                                             status_code=200)
+                                             status_code=200), 205
 
     elif folder_id>0:
         connection = DatabaseConnector()
-        query_child = f"""SELECT folder_id, name, color
-                    FROM projects_folders
-                    WHERE folder_id in (SELECT child_folder
-                    FROM projects_folders_structure
-                    WHERE parent_folder = {folder_id} and type = 'folder')"""
+        query_child = GET_CHILD_FOLDERS.format(folder_id=folder_id)
         child = connection.select(query_child)
 
         result_child = []
@@ -54,11 +61,7 @@ async def get_folders_stucture(folder_id: int):
             )
             result_child.append(parent)
 
-        query_parents = f"""SELECT folder_id, name, color
-                    FROM projects_folders
-                    WHERE folder_id in (SELECT parent_folder
-                    FROM projects_folders_structure
-                    WHERE child_folder = {folder_id} and type = 'folder')"""
+        query_parents = GET_PARENT_FOLDERS.format(folder_id=folder_id)
         parents = connection.select(query_parents)
 
         result_parents = []
@@ -82,31 +85,27 @@ async def get_folders_stucture(folder_id: int):
 async def create_folder(body: CreateFolderRequestBody):
     connection = DatabaseConnector()
 
-    query = f"""INSERT INTO projects_folders (name, color)
-        VALUES ('{body.name}', '{body.color}');
-        INSERT INTO projects_folders_structure (type, parent_folder, child_folder)
-        VALUES ('folder', '{body.parent}', (SELECT max(folder_id) FROM projects_folders))"""
+    query = CREATE_FOLDER.format(name=body.name, color=body.color, parent=body.parent)
     connection.execute(query)
 
-    return CreateFolderResponseBody(status_code=200)
+    return CreateFolderResponseBody(message='folder create successful')
 
 
 @router.delete('/delete_folder', response_model=DeleteFolderResponseBody)
 async def delete_folder(body: DeleteFolderRequestBody):
     connection = DatabaseConnector()
-    query = f"""DELETE FROM projects_folders WHERE folder_id = {body.folder_id}"""
+    query = DELETE_FOLDER.format(folder_id=body.folder_id)
     connection.execute(query)
-    return DeleteFolderResponseBody(status_code=200)
+    return DeleteFolderResponseBody(message='delete folder successful')
 
 
 @router.put('/update_folder', response_model=UpdateFolderResponseBody)
 async def update_folder(body: UpdateFolderRequestBody):
     connection = DatabaseConnector()
-    query = f"""UPDATE projects_folders 
-                SET name = '{body.name}', color = '{body.color}'
-                WHERE folder_id = {body.folder_id}"""
+    print(body)
+    query = UPDATE_FOLDER.format(name=body.name, color=body.color, folder_id=body.folder_id)
     connection.execute(query)
-    return UpdateFolderResponseBody(status_code=200)
+    return UpdateFolderResponseBody(message="update folder successful")
 
 
 

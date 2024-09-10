@@ -1,3 +1,3 @@
-INSERT INTO projects_folders (name)
+INSERT INTO projects (name)
 VALUES ('Проект1'),
        ('Проект2')

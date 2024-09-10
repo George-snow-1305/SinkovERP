@@ -17,13 +17,12 @@ class FolderInStructureResponseBody(BaseModel):
 
 class CreateFolderRequestBody(BaseModel):
     parent: int | None
-    folder_id: int
     name: str
     color: str
 
 
 class CreateFolderResponseBody(BaseModel):
-    status_code: int
+    message: str
 
 
 class DeleteFolderRequestBody(BaseModel):
@@ -31,11 +30,11 @@ class DeleteFolderRequestBody(BaseModel):
 
 
 class DeleteFolderResponseBody(BaseModel):
-    status_code: int
+    message: str
 
 
 class UpdateFolderResponseBody(BaseModel):
-    status_code: int
+    message: str
 
 
 class UpdateFolderRequestBody(BaseModel):
