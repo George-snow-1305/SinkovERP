@@ -11,8 +11,8 @@ import psycopg2
 
 DB_USER = "postgres"
 DB_PASSWORD = "secret"
-DB_HOST = "localhost"
-DB_PORT = "8000"
+DB_HOST = "db"
+DB_PORT = "5432"
 DB_NAME = "postgres"
 
 CONN_STR = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"

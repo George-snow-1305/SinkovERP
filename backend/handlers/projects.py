@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from backend.database import DatabaseConnector
-from backend.schemas.projects import (FolderItem,
+from database.connector import DatabaseConnector
+from schemas.projects import (FolderItem,
                                       FolderInStructureResponseBody,
                                       CreateFolderRequestBody,
                                       CreateFolderResponseBody,
@@ -73,7 +73,7 @@ async def get_folders_stucture(folder_id: int):
         return FolderInStructureResponseBody(folder_id=folder_id,
                                              parents=result_parents,
                                              child=result_child,
-                                             status=200)
+                                             status_code=200)
     else:
         raise HTTPException(status_code=400, detail='bad folder_id')
 

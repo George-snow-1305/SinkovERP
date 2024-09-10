@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from backend.handlers import router as projects_router
+from handlers.projects import router as projects_router
 
 app = FastAPI()
 

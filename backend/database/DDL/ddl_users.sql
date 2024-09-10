@@ -5,6 +5,6 @@ CREATE TABLE users
     role varchar(254),
     email varchar(254),
     phone_number varchar(254),
-    creation_date timestamp,
-    update_date timestamp,
+    creation_date timestamp default now(),
+    update_date timestamp default now()
 )
