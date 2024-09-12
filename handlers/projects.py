@@ -17,7 +17,7 @@ from schemas.projects import (FolderItem,
                                       UpdateFolderRequestBody,
                                       UpdateFolderResponseBody)
 
-router = APIRouter(prefix='/projects')
+router = APIRouter(prefix='api/projects')
 
 
 @router.get('/get_folders', response_model=FolderInStructureResponseBody)
@@ -28,25 +28,7 @@ async def get_folders_stucture(folder_id: int):
     if len(result) == 0:
         raise HTTPException(status_code=400, detail="folder_id not found")
 
-    if folder_id == 0:
-        connection = DatabaseConnector()
-        query = GET_ROOT_FOLDERS
-        result = connection.select(query)
-        child = []
-        for item in result:
-            res = FolderItem(
-                folder_id=item[0],
-                name=item[1],
-                color=item[2]
-            )
-            child.append(res)
-
-        return FolderInStructureResponseBody(folder_id=folder_id,
-                                             parents=[],
-                                             child=child,
-                                             status_code=200), 205
-
-    elif folder_id>0:
+    elif folder_id>=0:
         connection = DatabaseConnector()
         query_child = GET_CHILD_FOLDERS.format(folder_id=folder_id)
         child = connection.select(query_child)
@@ -93,6 +75,14 @@ async def create_folder(body: CreateFolderRequestBody):
 @router.delete('/delete_folder', response_model=DeleteFolderResponseBody)
 async def delete_folder(body: DeleteFolderRequestBody):
     connection = DatabaseConnector()
+    if body.folder_id == 0:
+        raise HTTPException(status_code=400, detail="can't delete the root directory")
+
+    query = GET_FOLDER_BY_FOLDER_ID.format(folder_id=body.folder_id)
+    result = connection.select(query)
+    if len(result) == 0:
+        raise HTTPException(status_code=400, detail="folder_id not found")
+
     query = DELETE_FOLDER.format(folder_id=body.folder_id)
     connection.execute(query)
     return DeleteFolderResponseBody(message='delete folder successful')
