@@ -1,5 +1,4 @@
 from fastapi import APIRouter, HTTPException, status
-from fastapi.responses import JSONResponse
 from database.queries import (GET_FOLDER_BY_FOLDER_ID,
                               GET_ROOT_FOLDERS,
                               GET_CHILD_FOLDERS,

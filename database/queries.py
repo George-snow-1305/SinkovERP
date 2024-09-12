@@ -42,7 +42,8 @@ CREATE_FOLDER =\
 
 DELETE_FOLDER =\
     """
-    DELETE FROM projects_folders WHERE folder_id = {folder_id}
+    DELETE FROM projects_folders WHERE folder_id = {folder_id};
+    DELETE FROM projects_folders_structure WHERE parent_folder = {folder_id} or child_folder = {folder_id};
     """
 
 
