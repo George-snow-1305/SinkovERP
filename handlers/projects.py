@@ -17,7 +17,7 @@ from schemas.projects import (FolderItem,
                                       UpdateFolderRequestBody,
                                       UpdateFolderResponseBody)
 
-router = APIRouter(prefix='api/projects')
+router = APIRouter(prefix='/api/projects')
 
 
 @router.get('/get_folders', response_model=FolderInStructureResponseBody)
