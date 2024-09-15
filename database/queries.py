@@ -24,11 +24,22 @@ GET_CHILD_FOLDERS =\
 
 GET_PARENT_FOLDERS =\
     """
-    SELECT folder_id, name, color
-    FROM projects_folders
-    WHERE folder_id in (SELECT parent_folder 
-                        FROM projects_folders_structure
-                        WHERE child_folder = {folder_id} and type = 'folder')
+    WITH RECURSIVE r AS (
+   SELECT child_folder, parent_folder
+   FROM projects_folders_structure
+   WHERE child_folder = 4
+
+   UNION
+
+   SELECT projects_folders_structure.child_folder, projects_folders_structure.parent_folder
+   FROM projects_folders_structure
+   JOIN r
+        ON projects_folders_structure.child_folder = r.parent_folder
+   )
+
+    SELECT parent_folder, name, color FROM r
+    LEFT JOIN projects_folders
+    ON parent_folder = folder_id;
     """
 
 

@@ -66,7 +66,15 @@ async def get_folders_stucture(folder_id: int):
 async def create_folder(body: CreateFolderRequestBody):
     connection = DatabaseConnector()
 
+    query = GET_FOLDER_BY_FOLDER_ID.format(folder_id=body.parent)
+
+    result = connection.select(query)
+
+    if len(result) == 0:
+        raise HTTPException(status_code=400, detail="no such parent exists")
+
     query = CREATE_FOLDER.format(name=body.name, color=body.color, parent=body.parent)
+
     connection.execute(query)
 
     return CreateFolderResponseBody(message='folder create successful')
@@ -74,10 +82,11 @@ async def create_folder(body: CreateFolderRequestBody):
 
 @router.delete('/delete_folder', response_model=DeleteFolderResponseBody)
 async def delete_folder(body: DeleteFolderRequestBody):
-    connection = DatabaseConnector()
+
     if body.folder_id == 0:
         raise HTTPException(status_code=400, detail="can't delete the root directory")
 
+    connection = DatabaseConnector()
     query = GET_FOLDER_BY_FOLDER_ID.format(folder_id=body.folder_id)
     result = connection.select(query)
     if len(result) == 0:
@@ -91,7 +100,6 @@ async def delete_folder(body: DeleteFolderRequestBody):
 @router.put('/update_folder', response_model=UpdateFolderResponseBody)
 async def update_folder(body: UpdateFolderRequestBody):
     connection = DatabaseConnector()
-    print(body)
     query = UPDATE_FOLDER.format(name=body.name, color=body.color, folder_id=body.folder_id)
     connection.execute(query)
     return UpdateFolderResponseBody(message="update folder successful")
