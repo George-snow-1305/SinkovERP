@@ -9,13 +9,13 @@ from database.queries import (GET_FOLDER_BY_FOLDER_ID,
 
 from database.connector import DatabaseConnector
 from schemas.projects import (FolderItem,
-                                      FolderInStructureResponseBody,
-                                      CreateFolderRequestBody,
-                                      CreateFolderResponseBody,
-                                      DeleteFolderRequestBody,
-                                      DeleteFolderResponseBody,
-                                      UpdateFolderRequestBody,
-                                      UpdateFolderResponseBody)
+                              FolderInStructureResponseBody,
+                              CreateFolderRequestBody,
+                              CreateFolderResponseBody,
+                              DeleteFolderRequestBody,
+                              DeleteFolderResponseBody,
+                              UpdateFolderRequestBody,
+                              UpdateFolderResponseBody)
 
 router = APIRouter(prefix='/api/projects')
 
