@@ -27,7 +27,7 @@ GET_PARENT_FOLDERS =\
     WITH RECURSIVE r AS (
    SELECT child_folder, parent_folder
    FROM projects_folders_structure
-   WHERE child_folder = 4
+   WHERE child_folder = {folder_id}
 
    UNION
 
