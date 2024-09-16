@@ -55,7 +55,7 @@ async def get_folders_stucture(folder_id: int):
             result_parents.append(parent)
 
         return FolderInStructureResponseBody(folder_id=folder_id,
-                                             parents=result_parents,
+                                             parents=result_parents[::-1],
                                              child=result_child,
                                              status_code=200)
     else:
@@ -103,6 +103,11 @@ async def update_folder(body: UpdateFolderRequestBody):
     query = UPDATE_FOLDER.format(name=body.name, color=body.color, folder_id=body.folder_id)
     connection.execute(query)
     return UpdateFolderResponseBody(message="update folder successful")
+
+
+@router.post('/create_project', response_model=UpdateFolderResponseBody)
+async def update_folder(body: UpdateFolderRequestBody):
+    return
 
 
 
