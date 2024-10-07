@@ -1,11 +1,11 @@
 from fastapi import APIRouter, HTTPException, status
-from database.queries import (GET_FOLDER_BY_FOLDER_ID,
-                              GET_ROOT_FOLDERS,
-                              GET_CHILD_FOLDERS,
-                              GET_PARENT_FOLDERS,
-                              CREATE_FOLDER,
-                              DELETE_FOLDER,
-                              UPDATE_FOLDER)
+from database.queries.projects import (GET_FOLDER_BY_FOLDER_ID,
+                                          GET_ROOT_FOLDERS,
+                                          GET_CHILD_FOLDERS,
+                                          GET_PARENT_FOLDERS,
+                                          CREATE_FOLDER,
+                                          DELETE_FOLDER,
+                                          UPDATE_FOLDER)
 
 from database.connector import DatabaseConnector
 from schemas.projects import (FolderItem,
@@ -106,7 +106,7 @@ async def update_folder(body: UpdateFolderRequestBody):
 
 
 @router.post('/create_project', response_model=UpdateFolderResponseBody)
-async def update_folder(body: UpdateFolderRequestBody):
+async def create_project(body: UpdateFolderRequestBody):
     return
 
 
