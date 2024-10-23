@@ -12,7 +12,8 @@ from database.queries.catalog import (
                                 CREATE_SERVICES_FOLDER,
                                 DELETE_SERVICES_FOLDER,
                                 UPDATE_SERVICES_FOLDER,
-                                GET_SERVICES)
+                                GET_SERVICES,
+                                UPDATE_SERVICE)
 
 from database.connector import DatabaseConnector
 from schemas.catalog import (
@@ -25,7 +26,8 @@ from schemas.catalog import (
     UpdateFolderRequestBody,
     UpdateFolderResponseBody,
     GetServicesResponseBody,
-    ServiceItem)
+    ServiceItem,
+    UpdateServiceResponseBody)
 
 router = APIRouter(prefix='/api/catalog')
 
@@ -133,9 +135,25 @@ async def get_services(folder_id):
                               costs=item[8])
         services.append(service)
 
-
-
     return GetServicesResponseBody(services=services)
+
+
+@router.put('/services/update_service', response_model=UpdateServiceResponseBody)
+async def update_service(body: ServiceItem):
+    connection = DatabaseConnector()
+    query = UPDATE_SERVICE.format(product_id=f"'{body.product_id}'" if body.product_id is not None else "null",
+                                  article=f"'{body.article}'" if body.article is not None else "null",
+                                  comments=f"'{body.comments}'" if body.comments is not None else "null",
+                                  name=f"'{body.name}'" if body.name is not None else "null",
+                                  unit=f"'{body.unit}'" if body.unit is not None else "null",
+                                  standard_minutes_to_complete=f"'{body.standard_minutes_to_complete}'" if body.standard_minutes_to_complete is not None else "null",
+                                  production_costs=f"'{body.production_costs}'" if body.production_costs is not None else "null",
+                                  markup=f"'{body.markup}'" if body.markup is not None else "null",
+                                  costs=f"'{body.costs}'" if body.costs is not None else "null")
+
+    connection.execute(query)
+
+    return UpdateServiceResponseBody(message="update service successful")
 
 
 @router.get('/materials/get_folders', response_model=FolderInStructureResponseBody)

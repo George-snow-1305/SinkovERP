@@ -149,6 +149,21 @@ UPDATE_MATERIALS_FOLDER =\
     WHERE folder_id = {folder_id}
     """
 
+UPDATE_SERVICE =\
+    """
+    UPDATE catalog_services 
+    SET
+    article = {article},
+    comments = {comments},
+    name = {name},
+    unit = {unit},
+    standard_minutes_to_complete = {standard_minutes_to_complete},
+    production_costs = {production_costs},
+    markup = {markup},
+    costs = {costs}
+    WHERE product_id = {product_id}
+    """
+
 
 
 

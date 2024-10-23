@@ -56,3 +56,7 @@ class ServiceItem(BaseModel):
 
 class GetServicesResponseBody(BaseModel):
     services: List[ServiceItem]
+
+
+class UpdateServiceResponseBody(BaseModel):
+    message: str
