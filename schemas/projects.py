@@ -12,7 +12,6 @@ class FolderInStructureResponseBody(BaseModel):
     folder_id: int
     parents: List[FolderItem]
     child: List[FolderItem]
-    status_code: int
 
 
 class CreateFolderRequestBody(BaseModel):

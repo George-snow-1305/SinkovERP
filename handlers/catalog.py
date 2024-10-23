@@ -11,7 +11,8 @@ from database.queries.catalog import (
                                 GET_SERVICES_PARENT_FOLDERS,
                                 CREATE_SERVICES_FOLDER,
                                 DELETE_SERVICES_FOLDER,
-                                UPDATE_SERVICES_FOLDER)
+                                UPDATE_SERVICES_FOLDER,
+                                GET_SERVICES)
 
 from database.connector import DatabaseConnector
 from schemas.catalog import (
@@ -22,7 +23,9 @@ from schemas.catalog import (
     DeleteFolderRequestBody,
     DeleteFolderResponseBody,
     UpdateFolderRequestBody,
-    UpdateFolderResponseBody)
+    UpdateFolderResponseBody,
+    GetServicesResponseBody,
+    ServiceItem)
 
 router = APIRouter(prefix='/api/catalog')
 
@@ -63,8 +66,7 @@ async def services_get_folders_stucture(folder_id: int):
 
         return FolderInStructureResponseBody(folder_id=folder_id,
                                              parents=result_parents[::-1],
-                                             child=result_child,
-                                             status_code=200)
+                                             child=result_child)
     else:
         raise HTTPException(status_code=400, detail='bad folder_id')
 
@@ -108,6 +110,32 @@ async def update_folder(body: UpdateFolderRequestBody):
     query = UPDATE_SERVICES_FOLDER.format(name=body.name, color=body.color, folder_id=body.folder_id)
     connection.execute(query)
     return UpdateFolderResponseBody(message="update folder successful")
+
+
+@router.get('/services/get_services', response_model=GetServicesResponseBody)
+async def get_services(folder_id):
+    connection = DatabaseConnector()
+    query = GET_SERVICES.format(folder_id=folder_id)
+    query_result = connection.select(query)
+
+    print(query_result)
+
+    services=[]
+    for item in query_result:
+        service = ServiceItem(product_id=item[0],
+                              article=item[1],
+                              comments=item[2],
+                              name=item[3],
+                              unit=item[4],
+                              standard_minutes_to_complete=item[5],
+                              production_costs=item[6],
+                              markup=item[7],
+                              costs=item[8])
+        services.append(service)
+
+
+
+    return GetServicesResponseBody(services=services)
 
 
 @router.get('/materials/get_folders', response_model=FolderInStructureResponseBody)

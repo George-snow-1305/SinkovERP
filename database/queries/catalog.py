@@ -65,6 +65,22 @@ UPDATE_SERVICES_FOLDER =\
     WHERE folder_id = {folder_id}
     """
 
+GET_SERVICES =\
+    """
+    SELECT product_id,
+       article,
+       comments,
+       name,
+       unit,
+       standard_minutes_to_complete,
+       production_costs,
+       markup,
+       costs
+    FROM catalog_services t1
+    LEFT JOIN catalog_services_folders_structure t2
+    ON t1.product_id = t2.child_service
+    WHERE t2.parent_folder = {folder_id}
+    """
 
 GET_MATERIALS_FOLDER_BY_FOLDER_ID =\
     """SELECT * FROM catalog_materials_folders WHERE folder_id = {folder_id}"""

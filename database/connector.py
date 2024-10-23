@@ -34,5 +34,11 @@ class DatabaseConnector:
                 cursor.execute(query)
                 conn.commit()
 
+    def executemany(self, query: str, data: list) -> None:
+        with psycopg2.connect(self.conn_string) as conn:
+            with conn.cursor() as cursor:
+                cursor.executemany(query, data)
+                conn.commit()
+
 
 

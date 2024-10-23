@@ -56,8 +56,7 @@ async def get_folders_stucture(folder_id: int):
 
         return FolderInStructureResponseBody(folder_id=folder_id,
                                              parents=result_parents[::-1],
-                                             child=result_child,
-                                             status_code=200)
+                                             child=result_child)
     else:
         raise HTTPException(status_code=400, detail='bad folder_id')
 
