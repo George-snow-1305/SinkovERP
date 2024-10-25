@@ -6,7 +6,7 @@ CREATE TABLE catalog_services
     name varchar(254) NOT NULL,
     unit varchar(254),
     standard_minutes_to_complete int8,
-    production_costs float64,
-    markup float64,
-    costs float64
+    production_costs double precision,
+    markup double precision,
+    costs double precision
 );

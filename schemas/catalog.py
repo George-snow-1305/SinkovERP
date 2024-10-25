@@ -58,5 +58,53 @@ class GetServicesResponseBody(BaseModel):
     services: List[ServiceItem]
 
 
+class MaterialsItem(BaseModel):
+    product_id: int
+    article: str
+    comments: str | None
+    name: str | None
+    unit: str | None
+    standard_minutes_to_complete: int | None
+    production_costs: float | None
+    markup: int | None
+    costs: float | None
+
+
+class GetMaterialsResponseBody(BaseModel):
+    materials: List[MaterialsItem]
+
+
 class UpdateServiceResponseBody(BaseModel):
     message: str
+
+
+class MechanismItem(BaseModel):
+    product_id: int
+    article: str
+    comments: str | None
+    contractor: str| None
+    name: str | None
+    unit: str | None
+    production_costs: float | None
+    markup: int | None
+    costs: float | None
+
+
+class GetMechanismsResponseBody(BaseModel):
+    mechanisms: List[MechanismItem]
+
+
+class InvoiceItem(BaseModel):
+    product_id: int
+    article: str
+    comments: str | None
+    contractor: str| None
+    name: str | None
+    unit: str | None
+    production_costs: float | None
+    markup: int | None
+    costs: float | None
+
+
+class GetInvoicesResponseBody(BaseModel):
+    invoices: List[InvoiceItem]
