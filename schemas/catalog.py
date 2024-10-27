@@ -63,8 +63,8 @@ class MaterialsItem(BaseModel):
     article: str
     comments: str | None
     name: str | None
+    brand: str | None
     unit: str | None
-    standard_minutes_to_complete: int | None
     production_costs: float | None
     markup: int | None
     costs: float | None

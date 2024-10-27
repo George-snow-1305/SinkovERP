@@ -170,8 +170,8 @@ GET_MATERIALS =\
        article,
        comments,
        name,
+       brand,
        unit,
-       standard_minutes_to_complete,
        production_costs,
        markup,
        costs
@@ -237,9 +237,9 @@ GET_MECHANISMS =\
     SELECT product_id,
        article,
        comments,
+       contractor,
        name,
        unit,
-       standard_minutes_to_complete,
        production_costs,
        markup,
        costs
@@ -308,12 +308,11 @@ GET_INVOICE =\
        contractor,
        name,
        unit,
-       standard_minutes_to_complete,
        production_costs,
        markup,
        costs
-    FROM catalog_invoice t1
-    LEFT JOIN catalog_invoice_folders_structure t2
+    FROM catalog_invoices t1
+    LEFT JOIN catalog_invoices_folders_structure t2
     ON t1.product_id = t2.child_invoice
     WHERE t2.parent_folder = {folder_id}
     """

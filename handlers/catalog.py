@@ -3,6 +3,7 @@ from database.queries.catalog import (
                                 GET_MATERIALS_FOLDER_BY_FOLDER_ID,
                                 GET_MATERIALS_CHILD_FOLDERS,
                                 GET_MATERIALS_PARENT_FOLDERS,
+                                GET_MATERIALS,
                                 CREATE_MATERIALS_FOLDER,
                                 DELETE_MATERIALS_FOLDER,
                                 UPDATE_MATERIALS_FOLDER,
@@ -262,7 +263,7 @@ async def materials_update_folder(body: UpdateFolderRequestBody):
 
 
 @router.get('/materials/get_materials', response_model=GetMaterialsResponseBody)
-async def get_services(folder_id):
+async def get_materials(folder_id):
     connection = DatabaseConnector()
     query = GET_MATERIALS.format(folder_id=folder_id)
     query_result = connection.select(query)
@@ -275,8 +276,8 @@ async def get_services(folder_id):
                               article=item[1],
                               comments=item[2],
                               name=item[3],
-                              unit=item[4],
-                              standard_minutes_to_complete=item[5],
+                              brand=item[4],
+                              unit=item[5],
                               production_costs=item[6],
                               markup=item[7],
                               costs=item[8])
