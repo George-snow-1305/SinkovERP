@@ -114,5 +114,5 @@ class OperationItem(BaseModel):
 
 
 class GetOperationsResponseBody(BaseModel):
-    operations: List[OperationItem]
+    operations: List[OperationItem] | List
 

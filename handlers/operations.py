@@ -272,7 +272,7 @@ async def get_operations(folder_id: int):
 
     operations_raw = connection.select(query)
     if len(operations_raw) == 0:
-        raise HTTPException(status_code=400, detail="no such folder exists or isn't there operations")
+        return GetOperationsResponseBody(operations=[])
 
     for operation_raw in operations_raw:
         query = GET_PRODUCTS_BY_OPERATION.format(operation_id=operation_raw[0])
