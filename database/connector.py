@@ -40,5 +40,11 @@ class DatabaseConnector:
                 cursor.executemany(query, data)
                 conn.commit()
 
+    def execute_in_transaction(self, queries: list[str]) -> None:
+        with psycopg2.connect(self.conn_string) as conn:
+            with conn.cursor() as cursor:
+                for query in queries:
+                    cursor.execute(query)
+                conn.commit()
 
 

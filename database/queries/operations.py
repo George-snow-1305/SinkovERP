@@ -88,7 +88,8 @@ GET_OPERATION =\
 
 DELETE_OPERATION =\
     """
-    DELETE FROM {table_operations} WHERE operation_id = {operation_id} CASCADE;
+    DELETE FROM {table_folders_structure} WHERE child_operation = {operation_id} and type = 'operation';
+    DELETE  FROM {table_operations} CASCADE WHERE operation_id = {operation_id};
     DELETE FROM {table_operations_structure} WHERE operation_id = {operation_id}
     """
 
@@ -96,7 +97,7 @@ DELETE_OPERATION =\
 UPDATE_OPERATION =\
     """
     UPDATE {table_operations}
-    SET name = '{name}', unit = '{unit}', total = '{total}',
+    SET name = '{name}', unit = '{unit}', total = '{total}'
     WHERE operation_id = {operation_id}
     """
 

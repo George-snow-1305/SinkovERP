@@ -50,14 +50,14 @@ class CreateOperationRequestBody(BaseModel):
     parent_folder: int
     name: str | None
     unit: str | None
-    total: int | None
+    total: float | None
 
 
 class AddProductToOperationRequestBody(BaseModel):
     operation_id: int
     type: str
     product_id: int
-    total: int
+    total: float
 
 
 class AddProductToOperationResponseBody(BaseModel):
@@ -80,7 +80,7 @@ class UpdateOperationRequestBody(BaseModel):
     operation_id: int
     name: str
     unit: str | None
-    total: int | None
+    total: float | None
 
 
 class RemoveProductFromOperationResponseBody(BaseModel):
@@ -97,7 +97,7 @@ class ProductItem(BaseModel):
     type: str
     product_id: int
     name: str | None
-    total: int
+    total: float
     unit: str | None
     production_costs: float | None
     costs: float | None
@@ -106,7 +106,7 @@ class ProductItem(BaseModel):
 class OperationItem(BaseModel):
     operation_id: int
     name: str
-    total: int | None
+    total: float | None
     unit: str | None
     production_costs: float | None
     costs: float | None

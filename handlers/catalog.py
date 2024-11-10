@@ -31,6 +31,8 @@ from database.queries.catalog import (
                                 GET_INVOICE,
 )
 
+from utils.utils import prepare_values_with_null
+
 from database.connector import DatabaseConnector
 from schemas.catalog import (
     FolderItem,
@@ -112,6 +114,7 @@ async def services_create_folder(body: CreateFolderRequestBody):
 
     return CreateFolderResponseBody(message='folder create successful')
 
+
 @router.delete('/services/delete_folder', response_model=DeleteFolderResponseBody)
 async def services_delete_folder(body: DeleteFolderRequestBody):
     if body.folder_id == 0:
@@ -163,15 +166,15 @@ async def get_services(folder_id):
 @router.put('/services/update_service', response_model=UpdateServiceResponseBody)
 async def update_service(body: ServiceItem):
     connection = DatabaseConnector()
-    query = UPDATE_SERVICE.format(product_id=f"'{body.product_id}'" if body.product_id is not None else "null",
-                                  article=f"'{body.article}'" if body.article is not None else "null",
-                                  comments=f"'{body.comments}'" if body.comments is not None else "null",
-                                  name=f"'{body.name}'" if body.name is not None else "null",
-                                  unit=f"'{body.unit}'" if body.unit is not None else "null",
-                                  standard_minutes_to_complete=f"'{body.standard_minutes_to_complete}'" if body.standard_minutes_to_complete is not None else "null",
-                                  production_costs=f"'{body.production_costs}'" if body.production_costs is not None else "null",
-                                  markup=f"'{body.markup}'" if body.markup is not None else "null",
-                                  costs=f"'{body.costs}'" if body.costs is not None else "null")
+    query = UPDATE_SERVICE.format(product_id=prepare_values_with_null(body.product_id),
+                                  article=prepare_values_with_null(body.article),
+                                  comments=prepare_values_with_null(body.comments),
+                                  name=prepare_values_with_null(body.name),
+                                  unit=prepare_values_with_null(body.unit),
+                                  standard_minutes_to_complete=prepare_values_with_null(body.standard_minutes_to_complete),
+                                  production_costs=prepare_values_with_null(body.production_costs),
+                                  markup=prepare_values_with_null(body.markup),
+                                  costs=prepare_values_with_null(body.costs))
 
     connection.execute(query)
 

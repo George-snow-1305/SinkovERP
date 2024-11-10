@@ -205,11 +205,10 @@ async def delete_operation(body: DeleteOperationRequestBody):
         raise HTTPException(status_code=400, detail="no such operation exists")
 
     query = DELETE_OPERATION.format(
+        table_folders_structure=TABLE_CATALOG_OPERATIONS_FOLDERS_STRUCTURE,
         table_operations_structure=TABLE_CATALOG_OPERATIONS_STRUCTURE,
         table_operations=TABLE_CATALOG_OPERATIONS,
         operation_id=body.operation_id,
-        type=body.type,
-        product_id=body.product_id
     )
 
     connection.execute(query)
@@ -281,6 +280,9 @@ async def get_operations(folder_id: int):
 
         products = []
 
+        production_costs=0
+        costs=0
+
         for product_raw in products_raw:
             products.append(
                 ProductItem(
@@ -294,14 +296,17 @@ async def get_operations(folder_id: int):
                 )
             )
 
+            production_costs+=product_raw[5]
+            costs+=product_raw[6]
+
         operations.append(
             OperationItem(
                 operation_id=operation_raw[0],
                 name=operation_raw[1],
                 total=operation_raw[2],
                 unit=operation_raw[3],
-                production_costs=0,
-                costs=0,
+                production_costs=production_costs,
+                costs=costs,
                 products=products
             )
         )
