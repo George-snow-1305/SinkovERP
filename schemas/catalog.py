@@ -4,8 +4,8 @@ from typing import Any, List
 
 class FolderItem(BaseModel):
     folder_id: int
-    name: str
-    color: str
+    name: str | None
+    color: str | None
 
 
 class FolderInStructureResponseBody(BaseModel):
