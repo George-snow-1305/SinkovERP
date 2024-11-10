@@ -273,7 +273,10 @@ async def get_operations(folder_id: int):
     if len(operations_raw) == 0:
         return GetOperationsResponseBody(operations=[])
 
+    print(operations_raw)
+
     for operation_raw in operations_raw:
+        print(operation_raw)
         query = GET_PRODUCTS_BY_OPERATION.format(operation_id=operation_raw[0])
 
         products_raw = connection.select(query)

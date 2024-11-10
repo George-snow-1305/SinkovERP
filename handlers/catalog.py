@@ -90,6 +90,10 @@ async def services_get_folders_stucture(folder_id: int):
             )
             result_parents.append(parent)
 
+        print(result_child)
+        print("*"*100)
+        print(result_parents)
+
         return FolderInStructureResponseBody(folder_id=folder_id,
                                              parents=result_parents[::-1],
                                              child=result_child)

@@ -109,7 +109,7 @@ REMOVE_PRODUCT_FROM_OPERATION =\
 
 GET_OPERATIONS =\
     """
-    WITH operations as (SELECT child_operation as operation_id FROM catalog_operations_folders_structure WHERE parent_folder = {folder_id})
+    WITH operations as (SELECT child_operation as operation_id FROM catalog_operations_folders_structure WHERE parent_folder = {folder_id} and type = 'operation')
 
     SELECT t1.operation_id, name, t2.total, unit
     FROM operations t1
